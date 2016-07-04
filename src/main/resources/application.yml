@@ -2,11 +2,6 @@ server:
   port: 8080
   servletPath: /
 
-spring:
-  redis:
-#    host: 192.168.99.100
-    host: danon-redis-test-eu.ob8y9c.0001.euw1.cache.amazonaws.com
-
 logging:
   level:
     springfox.documentation.spring.web: WARN
