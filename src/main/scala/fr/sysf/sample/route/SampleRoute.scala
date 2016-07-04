@@ -17,14 +17,12 @@ import org.springframework.stereotype.Component
 @ImportResource(Array("classpath:spring/api-cxf-sample.xml"))
 class SampleRoute extends ScalaRouteBuilder(new DefaultCamelContext()) {
 
-  private final object external extends SampleRouteConstant
+  private object external extends SampleRouteConstant
 
-  private final object internal extends CustomerApiServiceConstant
+  private object internal extends CustomerApiServiceConstant
 
   "cxfrs:bean:v1ApiService?bindingStyle=SimpleConsumer" ==> {
     id("cxf-v1ApiService")
-    process(exchange =>
-      exchange)
 
     recipients(simple("direct:${header.operationName}"))
   }
@@ -136,6 +134,6 @@ trait SampleRouteConstant {
   final val customers_put = "direct:" + internal.customers_put_id
   final val customers_patch = "direct:" + internal.customers_patch_id
   final val customers_del = "direct:" + internal.customers_del_id
-  private final object internal extends CustomerApiServiceConstant
+  private object internal extends CustomerApiServiceConstant
 
 }

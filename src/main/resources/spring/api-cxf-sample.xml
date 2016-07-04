@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:cxfrs="http://cxf.apache.org/jaxrs"
        xmlns:camelcxf="http://camel.apache.org/schema/cxf"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
                http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
 
 
-    <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
-    <bean id="jsonContextResolver" class="fr.sysf.sample.util.JacksonContextResolver" />
-
+    <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
+    <bean id="jsonContextResolver" class="fr.sysf.sample.util.JacksonContextResolver"/>
     <bean id="sampleApiService" class="fr.sysf.sample.service.CustomerApiService"/>
 
-    <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
-    <bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+    <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+    <bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
 
     <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
         <property name="version" value="1.0"/>
@@ -35,16 +34,17 @@
                 <ref bean="sampleApiService"/>
             </list>
         </camelcxf:serviceBeans>
+
         <camelcxf:providers>
-            <ref bean="jsonProvider" />
-            <ref bean="jsonContextResolver" />
+            <ref bean="jsonProvider"/>
+            <ref bean="jsonContextResolver"/>
         </camelcxf:providers>
-        <camelcxf:features/>
+
         <camelcxf:outInterceptors>
-            <ref bean="loggingOutInterceptor" />
+            <ref bean="loggingOutInterceptor"/>
         </camelcxf:outInterceptors>
         <camelcxf:inInterceptors>
-            <ref bean="loggingInInterceptor" />
+            <ref bean="loggingInInterceptor"/>
         </camelcxf:inInterceptors>
     </camelcxf:rsServer>
 

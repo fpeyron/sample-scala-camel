@@ -6,7 +6,7 @@ import javax.ws.rs.core.Response
 
 import fr.sysf.sample.model.Customer
 import io.swagger.annotations._
-import io.swagger.jaxrs.PATCH
+import org.apache.cxf.jaxrs.ext.PATCH
 import org.springframework.http.MediaType
 
 
