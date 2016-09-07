@@ -30,7 +30,7 @@ class CamelConfig {
 
       // override property by system properties
       val propertiesComponent = camelContext.getComponent("properties", classOf[PropertiesComponent])
-      propertiesComponent.setSystemPropertiesMode(2);
+      propertiesComponent.setSystemPropertiesMode(2)
 
       // see if trace logging is turned on
       if (tracingEnabled)
@@ -40,6 +40,8 @@ class CamelConfig {
       camelContext.setStreamCaching(false)
 
     }
+
+    override def afterApplicationStart(camelContext: CamelContext): Unit = {}
   }
 
   @Bean
