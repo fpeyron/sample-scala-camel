@@ -1,4 +1,4 @@
-package fr.sysf.sample.route
+package fr.sysf.sample.routebuilder
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -6,7 +6,6 @@ import fr.sysf.sample.model.Customer
 import fr.sysf.sample.service.CustomerApiServiceConstant
 import org.apache.camel.impl.DefaultCamelContext
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
-import org.springframework.context.annotation.ImportResource
 import org.springframework.stereotype.Component
 
 /**
@@ -14,18 +13,12 @@ import org.springframework.stereotype.Component
   *         02/05/2016
   */
 @Component
-@ImportResource(Array("classpath:spring/api-cxf-sample.xml"))
-class SampleRoute extends ScalaRouteBuilder(new DefaultCamelContext()) {
+class CustomerHotelRoutebuilder extends ScalaRouteBuilder(new DefaultCamelContext()) {
 
-  private object external extends SampleRouteConstant
+  private object external extends CustomerRoutebuilderConstant
 
   private object internal extends CustomerApiServiceConstant
 
-  "cxfrs:bean:v1ApiService?bindingStyle=SimpleConsumer" ==> {
-    id("cxf-v1ApiService")
-
-    recipients(simple("direct:${header.operationName}"))
-  }
 
   external.customers_post ==> {
     id(internal.customers_post_id)
@@ -127,13 +120,14 @@ class SampleRoute extends ScalaRouteBuilder(new DefaultCamelContext()) {
 }
 
 
-trait SampleRouteConstant {
+trait CustomerRoutebuilderConstant {
 
   final val customers_post = "direct:" + internal.customers_post_id
   final val customers_get = "direct:" + internal.customers_get_id
   final val customers_put = "direct:" + internal.customers_put_id
   final val customers_patch = "direct:" + internal.customers_patch_id
   final val customers_del = "direct:" + internal.customers_del_id
+
   private object internal extends CustomerApiServiceConstant
 
 }

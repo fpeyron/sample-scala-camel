@@ -10,7 +10,8 @@
 
 
     <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
-    <bean id="sampleApiService" class="fr.sysf.sample.service.CustomerApiService"/>
+    <bean id="customerApiService" class="fr.sysf.sample.service.CustomerApiService"/>
+    <bean id="hotelApiService" class="fr.sysf.sample.service.HotelApiService"/>
 
 
     <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
@@ -28,7 +29,8 @@
     <camelcxf:rsServer id="v1ApiService" address="/v1">
         <camelcxf:serviceBeans>
             <list>
-                <ref bean="sampleApiService"/>
+                <ref bean="customerApiService"/>
+                <ref bean="hotelApiService"/>
             </list>
         </camelcxf:serviceBeans>
 
@@ -48,7 +50,8 @@
     <!-- "Swagger/normal" CXF Endpoint: generating JSON for the API -->
     <cxfrs:server id="docServer" address="/docs">
         <cxfrs:serviceBeans>
-            <ref bean="sampleApiService"/>
+            <ref bean="customerApiService"/>
+            <ref bean="hotelApiService"/>
         </cxfrs:serviceBeans>
         <cxfrs:providers>
             <ref bean="jsonProvider"/>

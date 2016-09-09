@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camelcxf="http://camel.apache.org/schema/cxf"
+       xmlns:http="http://cxf.apache.org/transports/http/configuration"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+              http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
+
+
+    <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
+
+    <!-- Clients -->
+    <camelcxf:rsClient id="hotelClient" address="${hotel.url}"
+                       serviceClass="fr.sysf.sample.client.HotelApiClient">
+
+        <camelcxf:providers>
+            <ref bean="jsonProvider"/>
+            <ref bean="jacksonContextResolver"/>
+        </camelcxf:providers>
+
+        <camelcxf:outInterceptors>
+            <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </camelcxf:outInterceptors>
+        <camelcxf:inInterceptors>
+            <bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </camelcxf:inInterceptors>
+
+    </camelcxf:rsClient>
+
+    <conduit name="*.http-conduit"
+             xmlns:sec="http://cxf.apache.org/configuration/security"
+             xmlns="http://cxf.apache.org/transports/http/configuration">
+        <authorization>
+            <sec:UserName>user</sec:UserName>
+            <sec:Password>password</sec:Password>
+            <sec:AuthorizationType>Basic</sec:AuthorizationType>
+        </authorization>
+    </conduit>
+</beans>

@@ -3,7 +3,7 @@ package fr.sysf.sample.util
 import javax.ws.rs.ext.{ContextResolver, Provider}
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include
-import com.fasterxml.jackson.databind.{ObjectMapper, SerializationFeature}
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.stereotype.Service
 
@@ -20,6 +20,7 @@ class JacksonContextResolver extends ContextResolver[ObjectMapper] {
   mapper.registerModule(new JavaTimeModule())
   mapper.setSerializationInclusion(Include.NON_EMPTY)
   mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+  mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   mapper.findAndRegisterModules()
 
   override def getContext(aClass: Class[_]): ObjectMapper = mapper
