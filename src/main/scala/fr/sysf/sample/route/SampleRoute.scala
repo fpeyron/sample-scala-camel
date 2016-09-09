@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ImportResource
 import org.springframework.stereotype.Component
 
 /**
-  * @author florent
+  * @author florent peyron
   *         02/05/2016
   */
 @Component
@@ -31,9 +31,9 @@ class SampleRoute extends ScalaRouteBuilder(new DefaultCamelContext()) {
     id(internal.customers_post_id)
 
     // Validation input
-    //-->("bean-validator://x")
+    -->("bean-validator://x")
 
-    process(_.in = null)
+    transform(_.in)
   }
 
   external.customers_get ==> {

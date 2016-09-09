@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.annotation.{ComponentScan, Configuration}
 
 object Application extends App {
-  SpringApplication.run(classOf[BootConfig])
+  SpringApplication.run(classOf[ApplicationConfig])
 }
 
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
-private class BootConfig
+private class ApplicationConfig

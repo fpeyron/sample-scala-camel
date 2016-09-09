@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.{Bean, Configuration}
 
 /**
-  * @author florent
+  * @author florent peyron
   *         01/05/2016
   */
 @Configuration

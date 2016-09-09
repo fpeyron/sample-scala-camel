@@ -11,7 +11,7 @@ import org.springframework.http.MediaType
 
 
 /**
-  * @author florent
+  * @author florent peyron
   *         02/05/2016
   */
 @Path("/customers")
@@ -24,7 +24,7 @@ class CustomerApiService {
   @Path("/")
   @ApiOperation(value = "CustomerCreate")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_CREATED, response = classOf[Void], message = "Success create"),
+    new ApiResponse(code = HttpURLConnection.HTTP_CREATED, response = classOf[Customer], message = "Success create"),
     new ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, response = classOf[Error], message = "Bad request"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
@@ -36,7 +36,7 @@ class CustomerApiService {
   @Path("/{id}")
   @ApiOperation(value = "CustomerGet")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_OK, response = classOf[Void], message = "Found record"),
+    new ApiResponse(code = HttpURLConnection.HTTP_OK, response = classOf[Customer], message = "Found record"),
     new ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, response = classOf[Error], message = "Account not Found"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
@@ -48,7 +48,7 @@ class CustomerApiService {
   @Path("/{id}")
   @ApiOperation(value = "CustomerPut")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_NO_CONTENT, response = classOf[Void], message = "Account updated"),
+    new ApiResponse(code = HttpURLConnection.HTTP_NO_CONTENT, response = classOf[Customer], message = "Account updated"),
     new ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, response = classOf[Error], message = "Account not Found"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))

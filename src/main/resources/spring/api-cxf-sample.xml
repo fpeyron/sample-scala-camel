@@ -10,11 +10,8 @@
 
 
     <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
-    <bean id="jsonContextResolver" class="fr.sysf.sample.util.JacksonContextResolver"/>
     <bean id="sampleApiService" class="fr.sysf.sample.service.CustomerApiService"/>
 
-    <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-    <bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
 
     <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
         <property name="version" value="1.0"/>
@@ -37,14 +34,14 @@
 
         <camelcxf:providers>
             <ref bean="jsonProvider"/>
-            <ref bean="jsonContextResolver"/>
+            <ref bean="jacksonContextResolver"/>
         </camelcxf:providers>
 
         <camelcxf:outInterceptors>
-            <ref bean="loggingOutInterceptor"/>
+            <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </camelcxf:outInterceptors>
         <camelcxf:inInterceptors>
-            <ref bean="loggingInInterceptor"/>
+            <bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </camelcxf:inInterceptors>
     </camelcxf:rsServer>
 
