@@ -1,11 +1,19 @@
 package fr.sysf.sample.routebuilder
 
+import java.net.URI
 import java.time.{LocalDate, LocalDateTime}
 
+import com.netflix.discovery.EurekaClient
 import fr.sysf.sample.model.Customer
 import fr.sysf.sample.service.CustomerApiServiceConstant
+import org.apache.camel.{Exchange, Processor}
+import org.apache.camel.component.cxf.common.message.CxfConstants
 import org.apache.camel.impl.DefaultCamelContext
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cloud.client.discovery.DiscoveryClient
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient
+import org.springframework.context.annotation.ImportResource
 import org.springframework.stereotype.Component
 
 /**
@@ -13,20 +21,43 @@ import org.springframework.stereotype.Component
   *         02/05/2016
   */
 @Component
+@ImportResource(Array("classpath:spring/api-cxf-client.xml"))
 class CustomerHotelRoutebuilder extends ScalaRouteBuilder(new DefaultCamelContext()) {
 
   private object external extends CustomerRoutebuilderConstant
 
   private object internal extends CustomerApiServiceConstant
 
+  @Autowired
+  private val eurekaClient: EurekaClient = null
+
+  @Autowired
+  private val loadBalancer: LoadBalancerClient = null
 
   external.customers_post ==> {
     id(internal.customers_post_id)
 
     // Validation input
-    -->("bean-validator://x")
+    //-->("bean-validator://x")
 
-    transform(_.in)
+    setHeader(CxfConstants.OPERATION_NAME, "fusionCustomerPut")
+    process(new Processor {
+      override def process(e: Exchange): Unit = {
+
+        val instance = eurekaClient.getNextServerFromEureka("FUSION-LOCAL-REFERENCIAL-RU", true)
+        val url = instance.getHomePageUrl() + "api/v1"
+        e.getIn.setHeader("myUrl", url)
+
+        val instanceload = loadBalancer.choose("FUSION-LOCAL-REFERENCIAL-RU")
+        val storesUri = String.format("http://%s:%s/api/v1", instanceload.getHost(), instanceload.getPort().toString)
+        e.getIn.setHeader("storesUri", storesUri)
+        loadBalancer.execute()
+        e.getIn.setHeader(Exchange.DESTINATION_OVERRIDE_URL, storesUri)
+
+      }
+    })
+    -->("cxfrs:bean:hotelClient?httpClientAPI=false&throwExceptionOnFailure=false&maxClientCacheSize=1")
+
   }
 
   external.customers_get ==> {

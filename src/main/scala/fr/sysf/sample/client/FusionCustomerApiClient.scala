@@ -10,20 +10,20 @@ import org.springframework.http.MediaType
   * @author florent peyron
   *         02/05/2016
   */
-@Path("/hotels")
+@Path("/customers")
 @Consumes(Array(MediaType.APPLICATION_JSON_UTF8_VALUE))
 @Produces(Array(MediaType.APPLICATION_JSON_UTF8_VALUE))
-class HotelApiClient {
+class FusionCustomerApiClient {
 
-  @GET
-  @Path("/{id}")
-  def partnerHotelsGet(
-                        @PathParam("id") id: String
+  @POST
+  @Path("")
+  def fusionCustomerPut(
+                       customer: FusionCustomer
                       ): FusionCustomer = null
 
 }
 
-trait HotelApiClientConstant {
+trait FusionCustomerApiClientConstant {
 
-  final val partner_hotels_get_id = "partnerHotelsGet"
+  final val fusion_customer_put_id = "fusionCustomerPut"
 }

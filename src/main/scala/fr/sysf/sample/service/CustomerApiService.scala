@@ -4,7 +4,7 @@ import java.net.HttpURLConnection
 import javax.ws.rs._
 import javax.ws.rs.core.Response
 
-import fr.sysf.sample.model.Customer
+import fr.sysf.sample.model.{Customer, FusionCustomer}
 import io.swagger.annotations._
 import org.apache.cxf.jaxrs.ext.PATCH
 import org.springframework.http.MediaType
@@ -21,16 +21,16 @@ import org.springframework.http.MediaType
 class CustomerApiService {
 
   @POST
-  @Path("/")
+  @Path("")
   @ApiOperation(value = "CustomerCreate")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_CREATED, response = classOf[Customer], message = "Success create"),
+    new ApiResponse(code = HttpURLConnection.HTTP_CREATED, response = classOf[FusionCustomer], message = "Success create"),
     new ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, response = classOf[Error], message = "Bad request"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
   def customers_post(
-                      body: Customer
-                    ): Response = null
+                      body: FusionCustomer
+                    ): FusionCustomer = null
 
   @GET
   @Path("/{id}")

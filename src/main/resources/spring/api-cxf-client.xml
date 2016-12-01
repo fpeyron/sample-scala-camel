@@ -11,8 +11,8 @@
     <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
 
     <!-- Clients -->
-    <camelcxf:rsClient id="hotelClient" address="${hotel.url}"
-                       serviceClass="fr.sysf.sample.client.HotelApiClient">
+    <camelcxf:rsClient id="hotelClient" address="${hotel.url:}"
+                       serviceClass="fr.sysf.sample.client.FusionCustomerApiClient">
 
         <camelcxf:providers>
             <ref bean="jsonProvider"/>

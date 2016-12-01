@@ -10,33 +10,34 @@ import scala.beans.BeanProperty
   * @author Florent Peyron
   *         10/09/2016
   */
-case class Hotel(
+case class FusionCustomer(
 
-                  //@(JsonIgnore@beanGetter)
-                  @(ApiModelProperty@beanGetter)(example = "57c0af8a412b3c049f38e6b4")
-                  @BeanProperty id: String,
+                           //@(JsonIgnore@beanGetter)
+                           @(ApiModelProperty@beanGetter)(example = "57c0af8a412b3c049f38e6b4")
+                           @BeanProperty customerId: String,
 
-                  @(ApiModelProperty@beanGetter)(example = "Blum")
-                  @(Length@beanGetter)(min = 3, max = 70) @(NotEmpty@beanGetter)
-                  @BeanProperty
-                  name: String,
+                           @(ApiModelProperty@beanGetter)(example = "Blum")
+                           @(Length@beanGetter)(min = 3, max = 70) @(NotEmpty@beanGetter)
+                           @BeanProperty
+                           firstName: String,
 
-                  @(ApiModelProperty@beanGetter)(example = "10 rue des plantes")
-                  @BeanProperty
-                  address: String,
+                           @(ApiModelProperty@beanGetter)(example = "10 rue des plantes")
+                           @BeanProperty
+                           address1: String,
 
-                  @(ApiModelProperty@beanGetter)(example = "75010")
-                  @(Length@beanGetter)(min = 5, max = 5) @(NotEmpty@beanGetter)
-                  @BeanProperty
-                  zip: String,
+                           @(ApiModelProperty@beanGetter)(example = "75010")
+                           @(Length@beanGetter)(min = 5, max = 5) @(NotEmpty@beanGetter)
+                           @BeanProperty
+                           zipCode: String,
 
-                  @BeanProperty
-                  creatingDate: java.time.Instant = null,
+                           countryCode: String,
 
-                  @BeanProperty
-                  updatingDate: java.time.Instant = null,
+                           email: String,
 
-                  @BeanProperty
-                  url: String = null
+                           @BeanProperty
+                           creatingDate: java.time.Instant = null,
 
-                )
+                           @BeanProperty
+                           updatingDate: java.time.Instant = null
+
+                         )

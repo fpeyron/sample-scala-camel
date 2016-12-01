@@ -1,5 +1,6 @@
 package fr.sysf.sample.routebuilder
 
+import org.apache.camel.{Exchange, Processor}
 import org.apache.camel.impl.DefaultCamelContext
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
 import org.springframework.context.annotation.ImportResource
@@ -15,7 +16,13 @@ class CxfRoutebuilder extends ScalaRouteBuilder(new DefaultCamelContext()) {
 
   "cxfrs:bean:v1ApiService?bindingStyle=SimpleConsumer" ==> {
     id("cxf-v1ApiService")
+     process( new Processor {
+       override def process(exchange: Exchange): Unit = {
+         exchange.header("operationName")
+       }
+     }
 
+     )
     recipients(simple("direct:${header.operationName}"))
   }
 
