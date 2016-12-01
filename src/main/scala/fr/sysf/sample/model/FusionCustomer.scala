@@ -1,7 +1,5 @@
 package fr.sysf.sample.model
 
-import java.time.LocalDateTime
-
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.validator.constraints.{Length, NotEmpty}
 
@@ -36,6 +34,9 @@ case class Hotel(
                   creatingDate: java.time.Instant = null,
 
                   @BeanProperty
-                  updatingDate: java.time.Instant = null
+                  updatingDate: java.time.Instant = null,
+
+                  @BeanProperty
+                  url: String = null
 
                 )

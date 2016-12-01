@@ -2,7 +2,7 @@ package fr.sysf.sample.client
 
 import javax.ws.rs._
 
-import fr.sysf.sample.model.Hotel
+import fr.sysf.sample.model.FusionCustomer
 import org.springframework.http.MediaType
 
 
@@ -19,7 +19,7 @@ class HotelApiClient {
   @Path("/{id}")
   def partnerHotelsGet(
                         @PathParam("id") id: String
-                      ): Hotel = null
+                      ): FusionCustomer = null
 
 }
 

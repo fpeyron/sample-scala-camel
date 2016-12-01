@@ -4,7 +4,7 @@ import java.net.HttpURLConnection
 import javax.ws.rs._
 import javax.ws.rs.core.Response
 
-import fr.sysf.sample.model.Hotel
+import fr.sysf.sample.model.FusionCustomer
 import io.swagger.annotations._
 import org.springframework.http.MediaType
 
@@ -23,19 +23,19 @@ class HotelApiService {
   @Path("/")
   @ApiOperation(value = "CustomerHotel")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_CREATED, response = classOf[Hotel], message = "Success create"),
+    new ApiResponse(code = HttpURLConnection.HTTP_CREATED, response = classOf[FusionCustomer], message = "Success create"),
     new ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, response = classOf[Error], message = "Bad request"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
   def hotels_post(
-                   body: Hotel
+                   body: FusionCustomer
                  ): Response = null
 
   @GET
   @Path("/{id}")
   @ApiOperation(value = "HotelGet")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_OK, response = classOf[Hotel], message = "Found record"),
+    new ApiResponse(code = HttpURLConnection.HTTP_OK, response = classOf[FusionCustomer], message = "Found record"),
     new ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, response = classOf[Error], message = "Hotel not Found"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
