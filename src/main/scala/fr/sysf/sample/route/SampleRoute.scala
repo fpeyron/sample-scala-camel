@@ -134,6 +134,7 @@ trait SampleRouteConstant {
   final val customers_put = "direct:" + internal.customers_put_id
   final val customers_patch = "direct:" + internal.customers_patch_id
   final val customers_del = "direct:" + internal.customers_del_id
+
   private object internal extends CustomerApiServiceConstant
 
 }

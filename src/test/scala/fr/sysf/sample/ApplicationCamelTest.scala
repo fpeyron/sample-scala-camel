@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
   * Created by florent on 21/02/2016.
   */
 @RunWith(classOf[SpringJUnit4ClassRunner])
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Array(classOf[ApplicationConfig]))
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Array(classOf[Application]))
 class ApplicationCamelTest {
 
   @Autowired

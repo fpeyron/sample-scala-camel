@@ -1,14 +1,16 @@
 package fr.sysf.sample
 
 import org.springframework.boot.SpringApplication
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.context.annotation.{ComponentScan, Configuration}
+import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBootApplication}
+import org.springframework.context.annotation.ComponentScan
 
-object Application extends App {
-  SpringApplication.run(classOf[ApplicationConfig])
-}
 
-@Configuration
+@SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan
-private class ApplicationConfig
+class Application {
+}
+
+object Application extends App {
+  SpringApplication.run(classOf[Application], args: _*)
+}
