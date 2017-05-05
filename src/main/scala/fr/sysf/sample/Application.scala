@@ -8,8 +8,7 @@ import org.springframework.context.annotation.ComponentScan
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan
-class Application {
-}
+class Application
 
 object Application extends App {
   SpringApplication.run(classOf[Application], args: _*)
