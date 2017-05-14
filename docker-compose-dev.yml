@@ -1,0 +1,25 @@
+version: '2'
+services:
+  service-pincode:
+    #build: .
+    container_name: sample-scala-camel
+    image: florentpeyron/sample-scala-camel
+    mem_limit: 256m
+    cpu_shares: 200
+    restart: always
+    ports:
+      - 80:8080
+    links:
+      - activemq:activemq
+    environment:
+      - PROFILES=dev
+      - JAVA_OPTS=-Xmx256m -Xms256m -Dspring.activemq.broker-url=tcp://activemq:61616
+    depends_on:
+      - activemq
+
+  activemq:
+    container_name: sample-activemq
+    image: webcenter/activemq:latest
+    mem_limit: 2048m
+    cpu_shares: 200
+    restart: always

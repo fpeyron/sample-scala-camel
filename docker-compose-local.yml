@@ -1,0 +1,14 @@
+version: '2'
+services:
+  service-pincode:
+    #build: .
+    container_name: sample-scala-camel
+    image: florentpeyron/sample-scala-camel
+    mem_limit: 256m
+    cpu_shares: 200
+    restart: always
+    ports:
+      - 80:8080
+    environment:
+      - PROFILES=local
+      - JAVA_OPTS=-Xmx256m -Xms256m

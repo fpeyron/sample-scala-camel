@@ -25,7 +25,7 @@ class ApplicationCamelTest {
   def getHello() {
 
     // getAll before insert
-    val response = restTemplate.getForEntity("/api/v1/customers/0000-AAAA", classOf[String])
+    val response = restTemplate.getForEntity("/api/customers/0000-AAAA", classOf[String])
     Assertions.assertThat(response.getStatusCodeValue).isEqualTo(HttpStatus.OK.value())
     //Assertions.assertThat(response.getBody.getContent).isEmpty
 

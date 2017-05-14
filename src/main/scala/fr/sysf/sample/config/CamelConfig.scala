@@ -37,7 +37,7 @@ class CamelConfig {
         camelContext.setTracing(true)
 
       // set StreamCaching to up
-      camelContext.setStreamCaching(false)
+      camelContext.setStreamCaching(true)
 
     }
 

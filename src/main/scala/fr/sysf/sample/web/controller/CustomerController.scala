@@ -1,4 +1,4 @@
-package fr.sysf.sample.service
+package fr.sysf.sample.web.controller
 
 import java.net.HttpURLConnection
 import javax.ws.rs._
@@ -8,17 +8,19 @@ import fr.sysf.sample.model.Customer
 import io.swagger.annotations._
 import org.apache.cxf.jaxrs.ext.PATCH
 import org.springframework.http.MediaType
+import org.springframework.stereotype.Controller
 
 
 /**
   * @author florent peyron
   *         02/05/2016
   */
+@Controller
 @Path("/customers")
 @Consumes(Array(MediaType.APPLICATION_JSON_UTF8_VALUE))
 @Produces(Array(MediaType.APPLICATION_JSON_UTF8_VALUE))
-@Api(value = "V1 - customer", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-class CustomerApiService {
+@Api(value = "api Customer", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+class CustomerController {
 
   @POST
   @Path("/")

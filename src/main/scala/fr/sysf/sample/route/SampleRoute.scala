@@ -3,10 +3,10 @@ package fr.sysf.sample.route
 import java.time.{LocalDate, LocalDateTime}
 
 import fr.sysf.sample.model.Customer
-import fr.sysf.sample.service.CustomerApiServiceConstant
-import org.apache.camel.impl.DefaultCamelContext
+import fr.sysf.sample.web.controller.CustomerApiServiceConstant
+import org.apache.camel.CamelContext
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
-import org.springframework.context.annotation.ImportResource
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
@@ -14,15 +14,14 @@ import org.springframework.stereotype.Component
   *         02/05/2016
   */
 @Component
-@ImportResource(Array("classpath:spring/api-cxf-sample.xml"))
-class SampleRoute extends ScalaRouteBuilder(new DefaultCamelContext()) {
+class SampleRoute(@Autowired val camelContext: CamelContext = null) extends ScalaRouteBuilder(camelContext) {
 
   private object external extends SampleRouteConstant
 
   private object internal extends CustomerApiServiceConstant
 
-  "cxfrs:bean:v1ApiService?bindingStyle=SimpleConsumer" ==> {
-    id("cxf-v1ApiService")
+  "cxfrs:bean:apiService?bindingStyle=SimpleConsumer" ==> {
+    id("cxf-apiService")
 
     recipients(simple("direct:${header.operationName}"))
   }
@@ -54,8 +53,16 @@ class SampleRoute extends ScalaRouteBuilder(new DefaultCamelContext()) {
 
   external.customers_put ==> {
     id(internal.customers_put_id)
+    //inOnly
+    -->("activemq:test?messageConverter=#jacksonJmsMessageConverter")
+  }
 
-    -->("mock:test")
+  "activemq:test?messageConverter=#jacksonJmsMessageConverter" ==> {
+    id("active_test")
+    transform { e =>
+      e.in
+    }
+    removeHeaders("*")
   }
 
   external.customers_patch ==> {
@@ -129,12 +136,11 @@ class SampleRoute extends ScalaRouteBuilder(new DefaultCamelContext()) {
 
 trait SampleRouteConstant {
 
-  final val customers_post = "direct:" + internal.customers_post_id
-  final val customers_get = "direct:" + internal.customers_get_id
-  final val customers_put = "direct:" + internal.customers_put_id
-  final val customers_patch = "direct:" + internal.customers_patch_id
-  final val customers_del = "direct:" + internal.customers_del_id
+  val customers_post = "direct:" + internal.customers_post_id
+  val customers_get = "direct:" + internal.customers_get_id
+  val customers_put = "direct:" + internal.customers_put_id
+  val customers_patch = "direct:" + internal.customers_patch_id
+  val customers_del = "direct:" + internal.customers_del_id
 
   private object internal extends CustomerApiServiceConstant
-
 }
