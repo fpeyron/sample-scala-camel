@@ -33,8 +33,7 @@ class CamelConfig {
       propertiesComponent.setSystemPropertiesMode(2)
 
       // see if trace logging is turned on
-      if (tracingEnabled)
-        camelContext.setTracing(true)
+      camelContext.setTracing(tracingEnabled)
 
       // set StreamCaching to up
       camelContext.setStreamCaching(true)

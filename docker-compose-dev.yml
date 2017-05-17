@@ -3,7 +3,7 @@ services:
   service-pincode:
     #build: .
     container_name: sample-scala-camel
-    image: florentpeyron/sample-scala-camel
+    image: sample/sample-scala-camel:latest
     mem_limit: 256m
     cpu_shares: 200
     restart: always
