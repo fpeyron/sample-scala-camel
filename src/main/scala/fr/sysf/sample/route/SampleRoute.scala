@@ -3,6 +3,7 @@ package fr.sysf.sample.route
 import java.time.{LocalDate, LocalDateTime}
 
 import fr.sysf.sample.model.Customer
+import fr.sysf.sample.util.RouteUtil
 import fr.sysf.sample.web.controller.CustomerApiServiceConstant
 import org.apache.camel.CamelContext
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
@@ -54,10 +55,12 @@ class SampleRoute(@Autowired val camelContext: CamelContext = null) extends Scal
   external.customers_put ==> {
     id(internal.customers_put_id)
     //inOnly
-    -->("activemq:test?messageConverter=#jacksonJmsMessageConverter")
+    //-->("activemq:test?messageConverter=#jacksonJmsMessageConverter")
+    -->(RouteUtil.amqSync("test"))
   }
 
-  "activemq:test?messageConverter=#jacksonJmsMessageConverter" ==> {
+  RouteUtil.amqSync("test") ==> {
+    //"activemq:test?messageConverter=#jacksonJmsMessageConverter" ==> {
     id("active_test")
     transform { e =>
       e.in
@@ -142,5 +145,11 @@ trait SampleRouteConstant {
   val customers_patch = "direct:" + internal.customers_patch_id
   val customers_del = "direct:" + internal.customers_del_id
 
-  private object internal extends CustomerApiServiceConstant
+  private object internal extends SampleRouteInternalConstant
+
+}
+
+trait SampleRouteInternalConstant extends CustomerApiServiceConstant {
+
+  val customers_post = "direct:"
 }
