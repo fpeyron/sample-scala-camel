@@ -1,10 +1,10 @@
-package fr.sysf.sample.web.controller
+package fr.sysf.sample.controllers
 
 import java.net.HttpURLConnection
 import javax.ws.rs._
 import javax.ws.rs.core.Response
 
-import fr.sysf.sample.model.Customer
+import fr.sysf.sample.models.Customer
 import io.swagger.annotations._
 import org.apache.cxf.jaxrs.ext.PATCH
 import org.springframework.http.MediaType

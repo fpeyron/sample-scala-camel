@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
   */
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Array(classOf[Application]))
-class ApplicationCamelTest {
+class ApplicationTest {
 
   @Autowired
   private val restTemplate: TestRestTemplate = null

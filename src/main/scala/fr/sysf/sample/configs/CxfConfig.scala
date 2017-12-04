@@ -1,10 +1,10 @@
-package fr.sysf.sample.config
+package fr.sysf.sample.configs
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.{ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
-import fr.sysf.sample.web.controller.CustomerController
+import fr.sysf.sample.controllers.CustomerController
 import org.apache.cxf.Bus
 import org.apache.cxf.endpoint.Server
 import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
@@ -66,7 +66,6 @@ class CxfConfig {
     val swagger2Feature = new Swagger2Feature
     swagger2Feature.setVersion("1.0")
     swagger2Feature.setTitle("API BUS SAMPLE")
-    swagger2Feature.setDynamicBasePath(false)
     swagger2Feature.setBasePath("/api")
 
     swagger2Feature

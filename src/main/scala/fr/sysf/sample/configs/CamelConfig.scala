@@ -1,4 +1,4 @@
-package fr.sysf.sample.config
+package fr.sysf.sample.configs
 
 import org.apache.camel.CamelContext
 import org.apache.camel.component.properties.PropertiesComponent

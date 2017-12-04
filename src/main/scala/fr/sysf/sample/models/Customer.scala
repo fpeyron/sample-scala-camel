@@ -1,4 +1,4 @@
-package fr.sysf.sample.model
+package fr.sysf.sample.models
 
 
 import java.time.{LocalDate, LocalDateTime}

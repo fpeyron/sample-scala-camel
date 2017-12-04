@@ -1,4 +1,4 @@
-package fr.sysf.sample.config
+package fr.sysf.sample.configs
 
 import com.google.common.collect.Sets
 import org.springframework.context.annotation.{Bean, Configuration}

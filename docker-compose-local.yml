@@ -1,6 +1,6 @@
 version: '2'
 services:
-  service-pincode:
+  sample-scala-camel:
     container_name: sample-scala-camel
     image: sample/sample-scala-camel:latest
     mem_limit: 256m
