@@ -4,7 +4,7 @@ import java.net.HttpURLConnection
 import javax.ws.rs._
 import javax.ws.rs.core.Response
 
-import fr.sysf.sample.models.Customer
+import fr.sysf.sample.models.{CsCreateCustomer, CsCustomer}
 import io.swagger.annotations._
 import org.apache.cxf.jaxrs.ext.PATCH
 import org.springframework.http.MediaType
@@ -26,37 +26,37 @@ class CustomerController {
   @Path("/")
   @ApiOperation(value = "CustomerCreate")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_CREATED, response = classOf[Customer], message = "Success create"),
+    new ApiResponse(code = HttpURLConnection.HTTP_CREATED, response = classOf[CsCustomer], message = "Success create"),
     new ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, response = classOf[Error], message = "Bad request"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
   def customers_post(
-                      body: Customer
+                      body: CsCreateCustomer
                     ): Response = null
 
   @GET
   @Path("/{id}")
   @ApiOperation(value = "CustomerGet")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_OK, response = classOf[Customer], message = "Found record"),
+    new ApiResponse(code = HttpURLConnection.HTTP_OK, response = classOf[CsCustomer], message = "Found record"),
     new ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, response = classOf[Error], message = "Account not Found"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
   def customers_get(
-                     @ApiParam(defaultValue = "0000-AAAA") @PathParam("id") id: String
+                     @ApiParam(defaultValue = "CA_USR_000484440") @PathParam("id") id: String
                    ): Response = null
 
   @PUT
   @Path("/{id}")
   @ApiOperation(value = "CustomerPut")
   @ApiResponses(value = Array(
-    new ApiResponse(code = HttpURLConnection.HTTP_NO_CONTENT, response = classOf[Customer], message = "Account updated"),
+    new ApiResponse(code = HttpURLConnection.HTTP_NO_CONTENT, response = classOf[CsCustomer], message = "Account updated"),
     new ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, response = classOf[Error], message = "Account not Found"),
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
   def customers_put(
                      @ApiParam(defaultValue = "0") @PathParam("id") id: String,
-                     body: Customer
+                     body: CsCustomer
                    ): Response = null
 
   @PATCH

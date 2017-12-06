@@ -3,7 +3,7 @@ package fr.sysf.sample.routes
 import java.time.{LocalDate, LocalDateTime}
 
 import fr.sysf.sample.controllers.CustomerApiServiceConstant
-import fr.sysf.sample.models.Customer
+import fr.sysf.sample.models.CsCustomer
 import org.apache.camel.CamelContext
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
 import org.springframework.beans.factory.annotation.Autowired

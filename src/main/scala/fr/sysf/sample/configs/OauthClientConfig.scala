@@ -1,0 +1,55 @@
+package fr.sysf.sample.configs
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
+import fr.sysf.sample.controllers.OauthClient
+import org.apache.cxf.Bus
+import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
+import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.{Bean, Configuration, ImportResource}
+
+import scala.collection.JavaConverters._
+
+/**
+  * @author florent peyron
+  *         01/05/2016
+  */
+@Configuration
+@ImportResource(Array("classpath:META-INF/cxf/cxf.xml", "classpath:META-INF/cxf/cxf-conduit-context.xml"))
+class OauthClientConfig {
+
+  @Autowired private val bus: Bus = null
+
+  @Autowired private val oauthClient: OauthClient = null
+
+
+  @Bean def cxfOauthClient: JAXRSClientFactoryBean = {
+    val endpoint = new JAXRSClientFactoryBean
+    endpoint.setAddress("https://sysf.eu.auth0.com/api/v2")
+    endpoint.setHeaders(Map("Authorization" -> "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlEwWTBNelJCTlVSRlJVSTRRVFUyT1RFNU5EWXpNME16TTBJeU9VUTBSa000TUVaQ05VSXpOUSJ9.eyJodHRwczovL2V4YW1wbGUuY29tL2NsYWltIjoiYmFyIiwiaXNzIjoiaHR0cHM6Ly9zeXNmLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiI1ZUYyMzlXRFNlT0cxTm9CNVhVazVmUnVSUUF0R3Vwb0BjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9zeXNmLmV1LmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTEyNTQ2NTI4LCJleHAiOjE1MTI2MzI5MjgsInNjb3BlIjoicmVhZDpjbGllbnRfZ3JhbnRzIGNyZWF0ZTpjbGllbnRfZ3JhbnRzIGRlbGV0ZTpjbGllbnRfZ3JhbnRzIHVwZGF0ZTpjbGllbnRfZ3JhbnRzIHJlYWQ6dXNlcnMgdXBkYXRlOnVzZXJzIGRlbGV0ZTp1c2VycyBjcmVhdGU6dXNlcnMgcmVhZDp1c2Vyc19hcHBfbWV0YWRhdGEgdXBkYXRlOnVzZXJzX2FwcF9tZXRhZGF0YSBkZWxldGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEgY3JlYXRlOnVzZXJfdGlja2V0cyByZWFkOmNsaWVudHMgdXBkYXRlOmNsaWVudHMgZGVsZXRlOmNsaWVudHMgY3JlYXRlOmNsaWVudHMgcmVhZDpjbGllbnRfa2V5cyB1cGRhdGU6Y2xpZW50X2tleXMgZGVsZXRlOmNsaWVudF9rZXlzIGNyZWF0ZTpjbGllbnRfa2V5cyByZWFkOmNvbm5lY3Rpb25zIHVwZGF0ZTpjb25uZWN0aW9ucyBkZWxldGU6Y29ubmVjdGlvbnMgY3JlYXRlOmNvbm5lY3Rpb25zIHJlYWQ6cmVzb3VyY2Vfc2VydmVycyB1cGRhdGU6cmVzb3VyY2Vfc2VydmVycyBkZWxldGU6cmVzb3VyY2Vfc2VydmVycyBjcmVhdGU6cmVzb3VyY2Vfc2VydmVycyByZWFkOmRldmljZV9jcmVkZW50aWFscyB1cGRhdGU6ZGV2aWNlX2NyZWRlbnRpYWxzIGRlbGV0ZTpkZXZpY2VfY3JlZGVudGlhbHMgY3JlYXRlOmRldmljZV9jcmVkZW50aWFscyByZWFkOnJ1bGVzIHVwZGF0ZTpydWxlcyBkZWxldGU6cnVsZXMgY3JlYXRlOnJ1bGVzIHJlYWQ6cnVsZXNfY29uZmlncyB1cGRhdGU6cnVsZXNfY29uZmlncyBkZWxldGU6cnVsZXNfY29uZmlncyByZWFkOmVtYWlsX3Byb3ZpZGVyIHVwZGF0ZTplbWFpbF9wcm92aWRlciBkZWxldGU6ZW1haWxfcHJvdmlkZXIgY3JlYXRlOmVtYWlsX3Byb3ZpZGVyIGJsYWNrbGlzdDp0b2tlbnMgcmVhZDpzdGF0cyByZWFkOnRlbmFudF9zZXR0aW5ncyB1cGRhdGU6dGVuYW50X3NldHRpbmdzIHJlYWQ6bG9ncyByZWFkOnNoaWVsZHMgY3JlYXRlOnNoaWVsZHMgZGVsZXRlOnNoaWVsZHMgdXBkYXRlOnRyaWdnZXJzIHJlYWQ6dHJpZ2dlcnMgcmVhZDpncmFudHMgZGVsZXRlOmdyYW50cyByZWFkOmd1YXJkaWFuX2ZhY3RvcnMgdXBkYXRlOmd1YXJkaWFuX2ZhY3RvcnMgcmVhZDpndWFyZGlhbl9lbnJvbGxtZW50cyBkZWxldGU6Z3VhcmRpYW5fZW5yb2xsbWVudHMgY3JlYXRlOmd1YXJkaWFuX2Vucm9sbG1lbnRfdGlja2V0cyByZWFkOnVzZXJfaWRwX3Rva2VucyBjcmVhdGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiBkZWxldGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiByZWFkOmN1c3RvbV9kb21haW5zIGRlbGV0ZTpjdXN0b21fZG9tYWlucyBjcmVhdGU6Y3VzdG9tX2RvbWFpbnMgZXh0cmEiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.ppRFyTtq4UwV7q_vvUoxi8pODEO2VR2yxDfyL6G_BX-lULKa2YUdapE4ggcrre_sAPtUYTRegxFtyCeqJnhOI4sfTF_1NavS1b4avkwikKTCQzjU3BwBUFLK6Rf7Qg6jnOzOIlgJANLCgISy0JtchJsJfoIGCCtGsYZtJjtzBfERuZWmjL-VbUWTxe15sB1vYn8GIZEp7WCCEZGOgYaj2NeMopzkn4-ikktebSb63A5g-f5F5YSBpCnIuYUtadRizgpLNdQTvcQTeFWzf1NBplsAhcAs2AnBJbVb4vj6VUlGCl-YVkXbjoBkso2lYEffiMDFwZKPLx7i8M61ift4pA").asJava)
+    endpoint.setBus(bus)
+    endpoint.setServiceClass(oauthClient.getClass)
+    endpoint.setInInterceptors(java.util.Arrays.asList(new LoggingInInterceptor))
+    endpoint.setOutInterceptors(java.util.Arrays.asList(new LoggingOutInterceptor))
+    endpoint.setProvider(cxfOauthjacksonJsonProvider)
+
+    endpoint
+  }
+
+  @Bean def cxfOauthjacksonJsonProvider: JacksonJsonProvider = {
+    val mapper = new ObjectMapper()
+    mapper.registerModule(new JavaTimeModule())
+    mapper.setSerializationInclusion(Include.NON_EMPTY)
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    mapper.findAndRegisterModules()
+    val jacksonJsonProvider = new JacksonJsonProvider()
+    jacksonJsonProvider.setMapper(mapper)
+
+    jacksonJsonProvider
+  }
+
+}

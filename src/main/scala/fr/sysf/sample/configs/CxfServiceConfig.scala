@@ -21,7 +21,7 @@ import org.springframework.context.annotation.{Bean, Configuration, ImportResour
   */
 @Configuration
 @ImportResource(Array("classpath:META-INF/cxf/cxf.xml"))
-class CxfConfig {
+class CxfServiceConfig {
 
   @Autowired private val bus: Bus = null
 
@@ -67,7 +67,7 @@ class CxfConfig {
     swagger2Feature.setVersion("1.0")
     swagger2Feature.setTitle("API BUS SAMPLE")
     swagger2Feature.setBasePath("/api")
-
+    //swagger2Feature.setRunAsFilter(false)
     swagger2Feature
   }
 }
