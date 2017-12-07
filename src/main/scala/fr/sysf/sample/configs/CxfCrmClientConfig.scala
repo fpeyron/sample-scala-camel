@@ -8,7 +8,7 @@ import fr.sysf.sample.controllers.CrmClient
 import org.apache.cxf.Bus
 import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.context.annotation.{Bean, Configuration, ImportResource}
 
 import scala.collection.JavaConverters._
@@ -21,16 +21,22 @@ import scala.collection.JavaConverters._
 @ImportResource(Array("classpath:META-INF/cxf/cxf.xml", "classpath:META-INF/cxf/cxf-conduit-context.xml"))
 class CxfCrmClientConfig {
 
+  @Value("${crm.url:https://localhost:10443/api}")
+  private val crmUrl: String = null
+
+  @Value("${crm.authorization:Basic VXNlcm5hbWU6VUFUQkVUQ0Nsb3VkU2VydmljZTtQYXNzd29yZDpHRFJERWZnNDM1ZmRnYyTCoyVmZ3hjdmI=}")
+  private val crmAuthorization: String = null
+
   @Autowired private val bus: Bus = null
 
   @Autowired private val crmClient: CrmClient = null
 
   @Bean def cxfCrmClient: JAXRSClientFactoryBean = {
     val endpoint = new JAXRSClientFactoryBean
-    endpoint.setAddress("https://localhost:10443/api")
+    endpoint.setAddress(crmUrl)
     //endpoint.setUsername("UATBETCCloudService")
     //endpoint.setPassword("GDRDEfg435fdgc$£%fgxcvb")
-    endpoint.setHeaders(Map("Authorization" -> "Basic VXNlcm5hbWU6VUFUQkVUQ0Nsb3VkU2VydmljZTtQYXNzd29yZDpHRFJERWZnNDM1ZmRnYyTCoyVmZ3hjdmI=").asJava)
+    endpoint.setHeaders(Map("Authorization" -> crmAuthorization).asJava)
     endpoint.setBus(bus)
     endpoint.setServiceClass(crmClient.getClass)
     endpoint.setInInterceptors(java.util.Arrays.asList(new LoggingInInterceptor))
