@@ -70,4 +70,13 @@ class CxfServiceConfig {
     //swagger2Feature.setRunAsFilter(false)
     swagger2Feature
   }
+
+  /*
+    @Bean def exceptionHandler = new ExceptionMapper[Exception]{
+      override def toResponse(exception: Exception): Response = Response
+        .status(HttpURLConnection.HTTP_FORBIDDEN)
+        .entity(exception.getMessage)
+        .build()
+    }
+    */
 }

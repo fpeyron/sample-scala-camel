@@ -41,3 +41,6 @@ To create instance on docker machine (need environment variables)
     docker create  --name sample-scala-camel1 -t -p 8081:8080 florentpeyron/sample-scala-camel
 
     docker create  --name sample-scala-camel2 -t -p 8082:8080 florentpeyron/sample-scala-camel
+
+
+openssl x509 -pubkey -noout -in sysf.pem 

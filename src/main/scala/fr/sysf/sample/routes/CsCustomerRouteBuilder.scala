@@ -64,8 +64,9 @@ class SampleRoute(@Autowired val camelContext: CamelContext = null) extends Scal
         given_name = Some(csCreateCustomer.firstname),
         nickname = Some(csCreateCustomer.firstname),
         app_metadata = Map(
-          "danon/customerId" -> customerId,
-          "danon/countryCode" -> csCreateCustomer.countryCode.toUpperCase
+          "danon_roles" -> "CUSTOMER",
+          "danon_customerId" -> customerId,
+          "danon_countryCode" -> csCreateCustomer.countryCode.toUpperCase
         )
       )
     }
@@ -77,7 +78,7 @@ class SampleRoute(@Autowired val camelContext: CamelContext = null) extends Scal
   external.customers_get ==> {
     id(internal.customers_get_id)
 
-    setProperty("customerId", _.getIn.getHeader("id"))
+    setProperty("customerId", _.getIn.getHeader("customerId"))
     -->(crm.getCustomer)
 
     transform { e =>

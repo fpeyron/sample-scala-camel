@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller
 @Api(value = "api Customer", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 class CustomerController {
 
+  @Public
   @POST
   @Path("/")
   @ApiOperation(value = "CustomerCreate")
@@ -34,8 +35,9 @@ class CustomerController {
                       body: CsCreateCustomer
                     ): Response = null
 
+  @Front
   @GET
-  @Path("/{id}")
+  @Path("/{customerId}")
   @ApiOperation(value = "CustomerGet")
   @ApiResponses(value = Array(
     new ApiResponse(code = HttpURLConnection.HTTP_OK, response = classOf[CsCustomer], message = "Found record"),
@@ -43,7 +45,7 @@ class CustomerController {
     new ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, response = classOf[Error], message = "Internal error")
   ))
   def customers_get(
-                     @ApiParam(defaultValue = "CA_USR_000484440") @PathParam("id") id: String
+                     @ApiParam(defaultValue = "CA_USR_000484440") @PathParam("customerId") customerId: String
                    ): Response = null
 
   @PUT
@@ -84,3 +86,25 @@ trait CustomerApiServiceConstant {
   final val customers_patch_id = "customers_patch"
   final val customers_del_id = "customers_del"
 }
+
+
+/*
+case class Back() extends Target with scala.annotation.StaticAnnotation {
+  override def value() = Array(ElementType.METHOD)
+
+  override def annotationType(): Class[_ <: Annotation] = classOf[Back]
+}
+
+case class Public() extends Target with scala.annotation.StaticAnnotation {
+  override def value() = Array(ElementType.METHOD)
+
+  override def annotationType(): Class[_ <: Annotation] = classOf[Public]
+}
+
+
+case class Front() extends Target with scala.annotation.StaticAnnotation {
+  override def value() = Array(ElementType.METHOD)
+
+  override def annotationType(): Class[_ <: Annotation] = classOf[Front]
+}
+*/
