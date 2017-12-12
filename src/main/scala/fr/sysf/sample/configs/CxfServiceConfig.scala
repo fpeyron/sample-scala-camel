@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.{ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
-import fr.sysf.sample.controllers.CustomerController
+import fr.sysf.sample.controllers.CsRootController
 import org.apache.cxf.Bus
 import org.apache.cxf.endpoint.Server
 import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
@@ -25,7 +25,7 @@ class CxfServiceConfig {
 
   @Autowired private val bus: Bus = null
 
-  @Autowired private val customerController: CustomerController = null
+  @Autowired private val csRootController: CsRootController = null
 
   @Bean def servletRegistrationBean = new ServletRegistrationBean(new CXFServlet, "/api/*")
 
@@ -33,7 +33,7 @@ class CxfServiceConfig {
     val endpoint = new JAXRSServerFactoryBean
     endpoint.setAddress("/")
     endpoint.setBus(bus)
-    endpoint.setServiceBeans(java.util.Arrays.asList(customerController))
+    endpoint.setServiceBeans(java.util.Arrays.asList(csRootController))
     endpoint.setInInterceptors(java.util.Arrays.asList(new LoggingInInterceptor))
     endpoint.setOutInterceptors(java.util.Arrays.asList(new LoggingOutInterceptor))
     endpoint.setProvider(jacksonJsonProvider)
@@ -57,7 +57,7 @@ class CxfServiceConfig {
   @Bean def apiDocsService: Server = {
     val endpoint = new JAXRSServerFactoryBean
     endpoint.setAddress("/docs")
-    endpoint.setServiceBeans(java.util.Arrays.asList(customerController))
+    endpoint.setServiceBeans(java.util.Arrays.asList(csRootController))
     endpoint.setFeatures(java.util.Arrays.asList(swagger2Feature))
     endpoint.create
   }

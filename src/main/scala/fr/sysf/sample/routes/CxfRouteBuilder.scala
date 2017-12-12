@@ -2,7 +2,7 @@ package fr.sysf.sample.routes
 
 import java.net.HttpURLConnection
 
-import fr.sysf.sample.controllers.{CustomerController, Front, Public}
+import fr.sysf.sample.controllers.{CsCustomerController, Front, Public}
 import org.apache.camel.component.cxf.common.message.CxfConstants
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
 import org.apache.camel.{CamelContext, Exchange}
@@ -98,8 +98,8 @@ class CxfRouteBuilder(@Autowired val camelContext: CamelContext = null) extends 
     recipients(e => s"direct:${e.getIn.getHeader(CxfConstants.OPERATION_NAME)}")
   }
 
-  private val controllerMethods = classOf[CustomerController].getMethods.map(e => e.getName -> e.getDeclaredAnnotations).toMap
-  private val controller = classOf[CustomerController].getMethods.map(e => e.getName -> e).toMap
+  private val controllerMethods = classOf[CsCustomerController].getMethods.map(e => e.getName -> e.getDeclaredAnnotations).toMap
+  private val controller = classOf[CsCustomerController].getMethods.map(e => e.getName -> e).toMap
 }
 
 trait CxfRouteInternalConstant {

@@ -15,12 +15,11 @@ import org.springframework.stereotype.Controller
   * @author florent peyron
   *         02/05/2016
   */
-@Controller
 @Path("/customers")
 @Consumes(Array(MediaType.APPLICATION_JSON_UTF8_VALUE))
 @Produces(Array(MediaType.APPLICATION_JSON_UTF8_VALUE))
 @Api(value = "api Customer", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-class CustomerController {
+trait CsCustomerController {
 
   @Public
   @POST
@@ -33,7 +32,7 @@ class CustomerController {
   ))
   def customers_post(
                       body: CsCreateCustomer
-                    ): Response = null
+                    ): Null = null
 
   @Front
   @GET

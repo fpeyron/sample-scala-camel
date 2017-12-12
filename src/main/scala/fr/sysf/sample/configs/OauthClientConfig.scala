@@ -21,10 +21,10 @@ import scala.collection.JavaConverters._
 @ImportResource(Array("classpath:META-INF/cxf/cxf.xml", "classpath:META-INF/cxf/cxf-conduit-context.xml"))
 class OauthClientConfig {
 
-  @Value("${oauth.url}")
+  @Value("${oauth.bo.url}")
   private val oauthUrl: String = null
 
-  @Value("${oauth.authorization}")
+  @Value("${oauth.bo.authorization}")
   private val oauthAuthorization: String = null
 
   @Autowired private val bus: Bus = null
