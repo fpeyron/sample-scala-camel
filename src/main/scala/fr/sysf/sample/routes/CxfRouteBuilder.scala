@@ -83,6 +83,10 @@ class CxfRouteBuilder(@Autowired val camelContext: CamelContext = null) extends 
           throw new ApiMethodNotAuthorizedException(s"uri not allowed for you : ${e.getIn.getHeader("CamelHttpMethod")} ${e.getIn.getHeader("CamelHttpUri")}")
         }
 
+        if(customerId.isDefined && customerId.get == "me" && authentificationCustomerId.isDefined) {
+          e.getIn.setHeader("customerId", authentificationCustomerId.get)
+        }
+
       }
 
       else {

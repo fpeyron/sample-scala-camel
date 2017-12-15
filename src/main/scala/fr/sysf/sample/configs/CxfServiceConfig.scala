@@ -36,7 +36,7 @@ class CxfServiceConfig {
     endpoint.setServiceBeans(java.util.Arrays.asList(csRootController))
     endpoint.setInInterceptors(java.util.Arrays.asList(new LoggingInInterceptor))
     endpoint.setOutInterceptors(java.util.Arrays.asList(new LoggingOutInterceptor))
-    endpoint.setProvider(jacksonJsonProvider)
+    endpoint.setProviders(java.util.Arrays.asList(jacksonJsonProvider, new org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter))
     endpoint.setFeatures(java.util.Arrays.asList(swagger2Feature))
 
     endpoint

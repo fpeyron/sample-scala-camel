@@ -82,11 +82,13 @@ class SampleRoute(@Autowired val camelContext: CamelContext = null) extends Scal
     -->(crm.getCustomer)
 
     transform { e =>
+      e.getIn.removeHeader("*")
       val crmCustomer = e.in[CrmCustomer]
       CsCustomer(
         id = crmCustomer.customerId,
         firstname = crmCustomer.firstName,
         lastname = crmCustomer.surname,
+        picture = crmCustomer.profilePicture.map(p => s"https://danon.s3.amazonaws.com/${crmCustomer.countryCode.map(_.toLowerCase).orNull}-${crmCustomer.languageCode.map(_.toLowerCase).orNull}/profiles/$p-120x120.jpg"),
         email = crmCustomer.email,
         birth_date = crmCustomer.dateOfBirth
       )

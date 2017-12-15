@@ -31,6 +31,10 @@ case class CsCustomer(
                        @(Email@beanGetter)
                        @BeanProperty email: Option[String],
 
+                       @(ApiModelProperty@beanGetter)(example = "https://picturestore/qsdqsdqs.png")
+                       @(Email@beanGetter)
+                       @BeanProperty picture: Option[String] = null,
+
                        @(ApiModelProperty@beanGetter)(example = "1990-04-04", dataType = "date")
                        @BeanProperty birth_date: Option[LocalDate] = null,
 
