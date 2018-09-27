@@ -52,25 +52,56 @@ class SampleRoute(@Autowired val camelContext: CamelContext = null) extends Scal
     -->(crm.createCustomer)
     setProperty("customerId", _.in[CrmCreateCustomerResponse].customerId)
 
-    // create User in OAuth
-    transform { e =>
-      val customerId = e.getProperty("customerId", classOf[String])
-      val csCreateCustomer = e.getProperty("csCreateCustomer", classOf[CsCreateCustomer])
 
-      OauthCreateUser(
-        email = Some(csCreateCustomer.email.toLowerCase),
-        password = Some(csCreateCustomer.password),
-        family_name = Some(csCreateCustomer.lastname),
-        given_name = Some(csCreateCustomer.firstname),
-        nickname = Some(csCreateCustomer.firstname),
-        app_metadata = Map(
-          "danon_roles" -> "CUSTOMER",
-          "danon_customerId" -> customerId,
-          "danon_countryCode" -> csCreateCustomer.countryCode.toUpperCase
-        )
-      )
+    choice {
+      when(_.getProperty("userId") != null) {
+
+        // Update User in OAuth
+        transform { e =>
+          val customerId = e.getProperty("customerId", classOf[String])
+          val csCreateCustomer = e.getProperty("csCreateCustomer", classOf[CsCreateCustomer])
+          Array(
+            e.getProperty("userId", classOf[String]),
+            OauthCreateUser(
+              email = Some(csCreateCustomer.email.toLowerCase),
+              password = Some(csCreateCustomer.password),
+              family_name = Some(csCreateCustomer.lastname),
+              given_name = Some(csCreateCustomer.firstname),
+              nickname = Some(csCreateCustomer.firstname),
+              app_metadata = Map(
+                "danon_roles" -> "CUSTOMER",
+                "danon_customerId" -> customerId,
+                "danon_countryCode" -> csCreateCustomer.countryCode.toUpperCase
+              )
+            )
+          )
+        }
+        -->(oauth.updateUser)
+      }
+
+      otherwise {
+
+        // create User in OAuth
+        transform { e =>
+          val customerId = e.getProperty("customerId", classOf[String])
+          val csCreateCustomer = e.getProperty("csCreateCustomer", classOf[CsCreateCustomer])
+
+          OauthCreateUser(
+            email = Some(csCreateCustomer.email.toLowerCase),
+            password = Some(csCreateCustomer.password),
+            family_name = Some(csCreateCustomer.lastname),
+            given_name = Some(csCreateCustomer.firstname),
+            nickname = Some(csCreateCustomer.firstname),
+            app_metadata = Map(
+              "danon_roles" -> "CUSTOMER",
+              "danon_customerId" -> customerId,
+              "danon_countryCode" -> csCreateCustomer.countryCode.toUpperCase
+            )
+          )
+        }
+        -->(oauth.createUser)
+      }
     }
-    -->(oauth.createUser)
 
     transform("")
   }

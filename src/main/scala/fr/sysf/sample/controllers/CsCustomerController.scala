@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller
 trait CsCustomerController {
 
   @Public
+  @Roles(Array("PUBLIC"))
   @POST
   @Path("/")
   @ApiOperation(value = "CustomerCreate")
@@ -35,6 +36,7 @@ trait CsCustomerController {
                     ): Null = null
 
   @Front
+  @Roles(Array("CUSTOMER"))
   @GET
   @Path("/{customerId}")
   @ApiOperation(value = "CustomerGet")

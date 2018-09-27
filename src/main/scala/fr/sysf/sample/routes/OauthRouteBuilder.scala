@@ -29,8 +29,18 @@ class OauthRouteBuilder(@Autowired val camelContext: CamelContext = null) extend
     id(internal.getUser_id)
 
 
-    transform(e => Array(e.getProperty("customerId")))
+    transform(e => Array(e.getProperty("userId")))
     setHeader(CxfConstants.OPERATION_NAME, internal.getUser_id)
+    -->(internal.cxfCall)
+  }
+
+
+  external.updateUser ==> {
+    id(internal.updateUser_id)
+
+
+    transform(e => Array(e.getProperty("userId"), e.in))
+    setHeader(CxfConstants.OPERATION_NAME, internal.updateUser_id)
     -->(internal.cxfCall)
   }
 
@@ -49,6 +59,7 @@ class OauthRouteBuilder(@Autowired val camelContext: CamelContext = null) extend
 trait OauthRouteConstant {
 
   val createUser = s"direct:${internal.createUser_id}"
+  val updateUser = s"direct:${internal.updateUser_id}"
   val getUser = s"direct:${internal.getUser_id}"
 
   private object internal extends OauthClientConstant with OauthRouteInternalConstant

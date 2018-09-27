@@ -2,7 +2,7 @@ package fr.sysf.sample.routes
 
 import java.net.HttpURLConnection
 
-import fr.sysf.sample.controllers.{CsCustomerController, Front, Public}
+import fr.sysf.sample.controllers.{CsCustomerController, Roles}
 import org.apache.camel.component.cxf.common.message.CxfConstants
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
 import org.apache.camel.{CamelContext, Exchange}
@@ -41,11 +41,10 @@ class CxfRouteBuilder(@Autowired val camelContext: CamelContext = null) extends 
     .handled(true)
     .transform { e =>
       val exception = e.getProperty(Exchange.EXCEPTION_CAUGHT, classOf[HandledException])
-      e.getIn.removeHeaders("*")
-      e.getIn.setHeader(Exchange.HTTP_RESPONSE_CODE, exception.httpResponseCode)
-      e.getProperty(s""""{ "errorCode": ${exception.httpResponseCode}", "message":"${exception.message}" }""")
+      s""""{ "errorCode": ${exception.httpResponseCode}", "message":"${exception.message}" }"""
     }
-
+    .removeHeaders("*")
+    .setHeader(Exchange.HTTP_RESPONSE_CODE, HttpURLConnection.HTTP_INTERNAL_ERROR)
 
   internal.cxfCall ==> {
     id(internal.cxfCall_id)
@@ -58,43 +57,33 @@ class CxfRouteBuilder(@Autowired val camelContext: CamelContext = null) extends 
         throw new ApiMethodNotFoundException(s"method not found : ${e.getIn.getHeader("CamelHttpMethod")} ${e.getIn.getHeader("CamelHttpUri")}")
       }
 
-      val methodDetail = controller.get(e.getIn.getHeader(CxfConstants.OPERATION_NAME, classOf[String])).get
+      // check info token
+      val jwtOption = Option(e.getIn.getHeader("Authorization", classOf[String])).map(_.replaceFirst("Bearer ", "")).map(JWT.getDecoder.decode(_, verifier))
 
-      val sd = controller.get(e.getIn.getHeader(CxfConstants.OPERATION_NAME, classOf[String])).map(_.getAnnotation(classOf[Front])).get
+      val authCustomerIdOption = jwtOption.flatMap(j => Option(j.claims.get("http://danon/customerId")).map(_.toString))
+      val authUserIdOption = jwtOption.map(_.uniqueId)
+      val authRole = jwtOption.flatMap(j => Option(j.claims.get("http://danon/roles")).map(_.toString)).getOrElse("PUBLIC")
 
-      // check token
-      val token = Option(e.getIn.getHeader("Authorization", classOf[String]))
 
-
-      if (token.isDefined) {
-        val jwt = JWT.getDecoder().decode(token.map(_.replaceFirst("Bearer ", "")).get, verifier)
-
-        val authentificationEmail = Option(jwt.claims.get("email")).map(_.toString)
-        val authentificationCustomerId = Option(jwt.claims.get("http://danon/customerId")).map(_.toString)
-        val authentificationCountryCode = Option(jwt.claims.get("http://danon/countryCode")).map(_.toString)
-        val authentificationRoles = Option(jwt.claims.get("http://danon/roles")).map(_.toString.split(","))
-
-        if (methodDetail.getAnnotation(classOf[Front]) == null) {
-          throw new ApiMethodNotAuthorizedException(s"uri not allowed with Front access : ${e.getIn.getHeader("CamelHttpMethod")} ${e.getIn.getHeader("CamelHttpUri")}")
-        }
-
-        val customerId = Option(e.getIn.getHeader("customerId", classOf[String]))
-        if (customerId.isDefined && customerId.get != "me" && customerId != authentificationCustomerId) {
-          throw new ApiMethodNotAuthorizedException(s"uri not allowed for you : ${e.getIn.getHeader("CamelHttpMethod")} ${e.getIn.getHeader("CamelHttpUri")}")
-        }
-
-        if(customerId.isDefined && customerId.get == "me" && authentificationCustomerId.isDefined) {
-          e.getIn.setHeader("customerId", authentificationCustomerId.get)
-        }
-
+      // check role with method
+      val methodDetail = controller(e.getIn.getHeader(CxfConstants.OPERATION_NAME, classOf[String]))
+      if (! Option(methodDetail.getAnnotation(classOf[Roles]).value()).getOrElse(Array("PUBLIC")).contains(authRole)) {
+        throw new ApiMethodNotAuthorizedException(s"uri not allowed with ${authRole.toLowerCase()} access : ${e.getIn.getHeader("CamelHttpMethod")} ${e.getIn.getHeader("CamelHttpUri")}")
       }
 
-      else {
-        if (methodDetail.getAnnotation(classOf[Public]) != null) {
-          throw new ApiMethodNotAuthorizedException(s"uri not allowed with public access : ${e.getIn.getHeader("CamelHttpMethod")} ${e.getIn.getHeader("CamelHttpUri")}")
-        }
+      // check customer id / email
+      val customerId = Option(e.getIn.getHeader("customerId", classOf[String]))
+      if (customerId.isDefined && customerId.get != "me"
+        && authCustomerIdOption.isDefined && customerId != authCustomerIdOption) {
+        throw new ApiMethodNotAuthorizedException(s"uri not allowed for you : ${e.getIn.getHeader("CamelHttpMethod")} ${e.getIn.getHeader("CamelHttpUri")}")
       }
 
+      // Enrich with Auth info
+      authCustomerIdOption.foreach{c =>
+        e.getIn.setHeader("customerId", c)
+        e.setProperty("customerId", c)
+      }
+      authUserIdOption.foreach(e.setProperty("userId", _))
     }
 
 

@@ -59,7 +59,7 @@ case class CsCreateCustomer(
                              @BeanProperty email: String,
 
                              @(ApiModelProperty@beanGetter)(example = "secret123")
-                             @(Length@beanGetter)(min = 4, max = 12) @(NotEmpty@beanGetter)
+                             @(Length@beanGetter)(min = 4, max = 12)
                              @BeanProperty password: String,
 
                              @(ApiModelProperty@beanGetter)(example = "CA")

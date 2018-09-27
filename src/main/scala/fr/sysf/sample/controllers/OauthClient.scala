@@ -4,6 +4,7 @@ import javax.ws.rs._
 import javax.ws.rs.core.Response
 
 import fr.sysf.sample.models.OauthCreateUser
+import org.apache.cxf.jaxrs.ext.PATCH
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 
@@ -19,6 +20,14 @@ class OauthClient {
   @Path("/users")
   def oauth_createUser(user: OauthCreateUser): Response = null
 
+
+  @PATCH
+  @Path("/users/{userId}")
+  def oauth_updateUser(
+                        @PathParam("userId") userId: String,
+                        user: OauthCreateUser
+                      ): Response = null
+
   @GET
   @Path("/users/{userId}")
   def oauth_getUser_id(
@@ -28,6 +37,7 @@ class OauthClient {
 
 trait OauthClientConstant {
   final val createUser_id = "oauth_createUser"
+  final val updateUser_id = "oauth_updateUser"
   final val getUser_id = "oauth_getUser_id"
 }
 
